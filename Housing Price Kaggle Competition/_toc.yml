@@ -4,8 +4,12 @@
 format: jb-book
 root: intro
 chapters:
-- file: Date Ingestion, Cleaning and Transformation
+- file: Data Ingestion, Cleaning & Transformation
 - file: Exploratory Data Analysis
+- file: Feature Engineering
+- file: Regression Model
+- file: Neural Network Model
+- file: Submission
 - file: markdown
 - file: notebooks
 - file: markdown-notebooks
