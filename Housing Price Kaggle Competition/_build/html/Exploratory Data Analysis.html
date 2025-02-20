@@ -1,0 +1,1430 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Exploratory Data Analysis &#8212; The Kaggle House Price Predictor Competition</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Exploratory Data Analysis';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Feature Importance" href="Feature%20Engineering.html" />
+    <link rel="prev" title="Data Ingestion, Cleaning &amp; Transformation" href="Data%20Ingestion%2C%20Cleaning%20%26%20Transformation.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="The Kaggle House Price Predictor Competition - Home"/>
+    <img src="_static/logo.png" class="logo__image only-dark pst-js-only" alt="The Kaggle House Price Predictor Competition - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    My Notebook for the Kaggle Housing Price Prediction
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Data%20Ingestion%2C%20Cleaning%20%26%20Transformation.html">Data Ingestion, Cleaning &amp; Transformation</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Exploratory Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Feature%20Engineering.html">Feature Importance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Regression%20Model.html">Regression Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Neural%20Network%20Model.html">Neural Network - Tensor Flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Submission.html">Creating the submission</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2FExploratory Data Analysis.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/Exploratory Data Analysis.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Exploratory Data Analysis</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#review-the-salesprice-label">Review the SalesPrice Label</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#view-the-statistical-data-of-the-continuous-data">View the statistical data of the continuous data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notes-on-correlation">Notes on correlation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#review-the-correlation-between-the-sales-price-and-all-other-continuous-variables-in-a-visual-format">Review the correlation between the sales price and all other continuous variables in a visual format</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#categorical-data">Categorical data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#distribution">Distribution</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#notes-on-the-distribution">Notes on the distribution</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#median-value-per-category">Median Value per category</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="exploratory-data-analysis">
+<h1>Exploratory Data Analysis<a class="headerlink" href="#exploratory-data-analysis" title="Link to this heading">#</a></h1>
+<p>Conduct a high level statistical analysis on the continous and categorical variables.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the necessary libraries</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the data into a pandas DataFrame</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;outputs/train_cleaned.csv&#39;</span><span class="p">)</span>
+
+<span class="c1"># Display the shape of the data</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1460, 84)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Display the information of the data to check there are not missing values</span>
+<span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 1460 entries, 0 to 1459
+Data columns (total 84 columns):
+ #   Column                     Non-Null Count  Dtype  
+---  ------                     --------------  -----  
+ 0   Id                         1460 non-null   int64  
+ 1   MSSubClass                 1460 non-null   int64  
+ 2   MSZoning                   1460 non-null   object 
+ 3   LotFrontage                1460 non-null   float64
+ 4   LotArea                    1460 non-null   int64  
+ 5   Street                     1460 non-null   object 
+ 6   Alley                      1460 non-null   object 
+ 7   LotShape                   1460 non-null   object 
+ 8   LandContour                1460 non-null   object 
+ 9   Utilities                  1460 non-null   object 
+ 10  LotConfig                  1460 non-null   object 
+ 11  LandSlope                  1460 non-null   object 
+ 12  Neighborhood               1460 non-null   object 
+ 13  Condition1                 1460 non-null   object 
+ 14  Condition2                 1460 non-null   object 
+ 15  BldgType                   1460 non-null   object 
+ 16  HouseStyle                 1460 non-null   object 
+ 17  OverallQual                1460 non-null   int64  
+ 18  OverallCond                1460 non-null   int64  
+ 19  YearBuilt                  1460 non-null   int64  
+ 20  YearRemodAdd               1460 non-null   int64  
+ 21  RoofStyle                  1460 non-null   object 
+ 22  RoofMatl                   1460 non-null   object 
+ 23  Exterior1st                1460 non-null   object 
+ 24  Exterior2nd                1460 non-null   object 
+ 25  MasVnrType                 1460 non-null   object 
+ 26  MasVnrArea                 1460 non-null   float64
+ 27  ExterQual                  1460 non-null   object 
+ 28  ExterCond                  1460 non-null   object 
+ 29  Foundation                 1460 non-null   object 
+ 30  BsmtQual                   1460 non-null   object 
+ 31  BsmtCond                   1460 non-null   object 
+ 32  BsmtExposure               1460 non-null   object 
+ 33  BsmtFinType1               1460 non-null   object 
+ 34  BsmtFinSF1                 1460 non-null   int64  
+ 35  BsmtFinType2               1460 non-null   object 
+ 36  BsmtFinSF2                 1460 non-null   int64  
+ 37  BsmtUnfSF                  1460 non-null   int64  
+ 38  TotalBsmtSF                1460 non-null   int64  
+ 39  Heating                    1460 non-null   object 
+ 40  HeatingQC                  1460 non-null   object 
+ 41  CentralAir                 1460 non-null   object 
+ 42  Electrical                 1460 non-null   object 
+ 43  1stFlrSF                   1460 non-null   int64  
+ 44  2ndFlrSF                   1460 non-null   int64  
+ 45  LowQualFinSF               1460 non-null   int64  
+ 46  GrLivArea                  1460 non-null   int64  
+ 47  BsmtFullBath               1460 non-null   int64  
+ 48  BsmtHalfBath               1460 non-null   int64  
+ 49  FullBath                   1460 non-null   int64  
+ 50  HalfBath                   1460 non-null   int64  
+ 51  BedroomAbvGr               1460 non-null   int64  
+ 52  KitchenAbvGr               1460 non-null   int64  
+ 53  KitchenQual                1460 non-null   object 
+ 54  TotRmsAbvGrd               1460 non-null   int64  
+ 55  Functional                 1460 non-null   object 
+ 56  Fireplaces                 1460 non-null   int64  
+ 57  FireplaceQu                1460 non-null   object 
+ 58  GarageType                 1460 non-null   object 
+ 59  GarageYrBlt                1460 non-null   float64
+ 60  GarageFinish               1460 non-null   object 
+ 61  GarageCars                 1460 non-null   int64  
+ 62  GarageArea                 1460 non-null   int64  
+ 63  GarageQual                 1460 non-null   object 
+ 64  GarageCond                 1460 non-null   object 
+ 65  PavedDrive                 1460 non-null   object 
+ 66  WoodDeckSF                 1460 non-null   int64  
+ 67  OpenPorchSF                1460 non-null   int64  
+ 68  EnclosedPorch              1460 non-null   int64  
+ 69  3SsnPorch                  1460 non-null   int64  
+ 70  ScreenPorch                1460 non-null   int64  
+ 71  PoolArea                   1460 non-null   int64  
+ 72  PoolQC                     1460 non-null   object 
+ 73  Fence                      1460 non-null   object 
+ 74  MiscFeature                1460 non-null   object 
+ 75  MiscVal                    1460 non-null   int64  
+ 76  MoSold                     1460 non-null   int64  
+ 77  YrSold                     1460 non-null   int64  
+ 78  SaleType                   1460 non-null   object 
+ 79  SaleCondition              1460 non-null   object 
+ 80  SalePrice                  1460 non-null   int64  
+ 81  InternalSF                 1460 non-null   int64  
+ 82  PorchDeckSF                1460 non-null   int64  
+ 83  Neighborhood_Price_Bucket  1460 non-null   object 
+dtypes: float64(3), int64(37), object(44)
+memory usage: 958.3+ KB
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Remove the outliers from the data using the IQR method</span>
+<span class="c1"># Calculate Q1 (25th percentile) and Q3 (75th percentile)</span>
+<span class="n">Q1</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;SalePrice&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="n">Q3</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;SalePrice&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span>
+
+<span class="c1"># Compute the Interquartile Range (IQR)</span>
+<span class="n">IQR</span> <span class="o">=</span> <span class="n">Q3</span> <span class="o">-</span> <span class="n">Q1</span>
+
+<span class="c1"># Define the lower and upper bounds</span>
+<span class="n">lower_bound</span> <span class="o">=</span> <span class="n">Q1</span> <span class="o">-</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">IQR</span>
+<span class="n">upper_bound</span> <span class="o">=</span> <span class="n">Q3</span> <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">IQR</span>
+
+<span class="c1"># Filter out the outliers</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;SalePrice&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">lower_bound</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;SalePrice&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">upper_bound</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="review-the-salesprice-label">
+<h2>Review the SalesPrice Label<a class="headerlink" href="#review-the-salesprice-label" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># View the statistical data for the SalePrice column</span>
+<span class="n">mean_price</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;SalePrice&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">median_price</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;SalePrice&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
+<span class="n">mode_price</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;SalePrice&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mode</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">std_price</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;SalePrice&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">min_price</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;SalePrice&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+<span class="n">max_price</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;SalePrice&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<span class="n">distribution_price</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;SalePrice&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">skew</span><span class="p">()</span>
+
+<span class="c1"># Print the data</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Mean: </span><span class="si">{</span><span class="n">mean_price</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Median: </span><span class="si">{</span><span class="n">median_price</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Mode: </span><span class="si">{</span><span class="n">mode_price</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Standard Deviation: </span><span class="si">{</span><span class="n">std_price</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Minimum: </span><span class="si">{</span><span class="n">min_price</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Maximum: </span><span class="si">{</span><span class="n">max_price</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Distribution: </span><span class="si">{</span><span class="n">distribution_price</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mean: 170237.13
+Median: 159500.0
+Mode: 140000
+Standard Deviation: 59230.131
+Minimum: 34900
+Maximum: 340000
+Distribution: 0.6797386630838265
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># View the distribution of the data</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">displot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;SalePrice&#39;</span><span class="p">],</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Distribution of Sale Price&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;Distribution of Sale Price&#39;)
+</pre></div>
+</div>
+<img alt="_images/4a2b56363898a80208637e74b194a98c4d7993867b2831dee2dd017ede01f4ce.png" src="_images/4a2b56363898a80208637e74b194a98c4d7993867b2831dee2dd017ede01f4ce.png" />
+</div>
+</div>
+</section>
+<section id="view-the-statistical-data-of-the-continuous-data">
+<h2>View the statistical data of the continuous data<a class="headerlink" href="#view-the-statistical-data-of-the-continuous-data" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Remove the integer columns that are not continuous</span>
+<span class="n">statistical_data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;Id&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># No inplace=True</span>
+
+<span class="c1"># Create a data frame of the statistical data</span>
+<span class="n">statistical_data</span> <span class="o">=</span> <span class="n">statistical_data</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Export the data to review the output</span>
+<span class="n">statistical_data</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;outputs/statistical_data.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a dataframe for the continuous variables</span>
+<span class="n">continuous_data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="s1">&#39;number&#39;</span><span class="p">)</span>
+
+<span class="c1"># drop the Id column</span>
+<span class="n">continuous_data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;Id&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Display the first 5 rows of the continuous data</span>
+<span class="n">continuous_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+
+<span class="c1"># Export the continuous data to a csv file</span>
+<span class="n">continuous_data</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;outputs/continuous_data.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute correlation</span>
+<span class="n">correlation_matrix</span> <span class="o">=</span> <span class="n">continuous_data</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+
+<span class="c1"># Get correlation of all features with SalesPrice</span>
+<span class="n">correlation_with_salesprice</span> <span class="o">=</span> <span class="n">correlation_matrix</span><span class="p">[</span><span class="s1">&#39;SalePrice&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;SalePrice&#39;</span><span class="p">)</span>
+
+<span class="c1"># Sort correlations in descending order</span>
+<span class="n">correlation_ranked</span> <span class="o">=</span> <span class="n">correlation_with_salesprice</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Convert to DataFrame for better presentation</span>
+<span class="n">correlation_df</span> <span class="o">=</span> <span class="n">correlation_ranked</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">correlation_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Feature&#39;</span><span class="p">,</span> <span class="s1">&#39;Correlation with SalePrice&#39;</span><span class="p">]</span>
+
+<span class="c1"># Display the results</span>
+<span class="n">correlation_df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Feature</th>
+      <th>Correlation with SalePrice</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>OverallQual</td>
+      <td>0.784294</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>InternalSF</td>
+      <td>0.732131</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>GrLivArea</td>
+      <td>0.661325</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>GarageCars</td>
+      <td>0.628013</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>GarageArea</td>
+      <td>0.607230</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>FullBath</td>
+      <td>0.577369</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>YearBuilt</td>
+      <td>0.564558</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>TotalBsmtSF</td>
+      <td>0.543508</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>YearRemodAdd</td>
+      <td>0.541161</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>1stFlrSF</td>
+      <td>0.522785</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>GarageYrBlt</td>
+      <td>0.475781</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>TotRmsAbvGrd</td>
+      <td>0.472292</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Fireplaces</td>
+      <td>0.453010</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>PorchDeckSF</td>
+      <td>0.371556</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>MasVnrArea</td>
+      <td>0.350541</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>OpenPorchSF</td>
+      <td>0.325791</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>2ndFlrSF</td>
+      <td>0.317358</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>WoodDeckSF</td>
+      <td>0.302339</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>LotFrontage</td>
+      <td>0.295796</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>BsmtFinSF1</td>
+      <td>0.290377</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>HalfBath</td>
+      <td>0.278831</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>LotArea</td>
+      <td>0.249812</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>BsmtUnfSF</td>
+      <td>0.222795</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>BsmtFullBath</td>
+      <td>0.202185</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>BedroomAbvGr</td>
+      <td>0.201610</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>KitchenAbvGr</td>
+      <td>0.147385</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>EnclosedPorch</td>
+      <td>0.144996</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>ScreenPorch</td>
+      <td>0.108851</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>MoSold</td>
+      <td>0.070478</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>MSSubClass</td>
+      <td>0.060111</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>LowQualFinSF</td>
+      <td>0.058086</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>PoolArea</td>
+      <td>0.048682</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>OverallCond</td>
+      <td>0.048005</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>3SsnPorch</td>
+      <td>0.043324</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>YrSold</td>
+      <td>0.028245</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>BsmtHalfBath</td>
+      <td>0.018827</td>
+    </tr>
+    <tr>
+      <th>36</th>
+      <td>MiscVal</td>
+      <td>0.012872</td>
+    </tr>
+    <tr>
+      <th>37</th>
+      <td>BsmtFinSF2</td>
+      <td>0.007154</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="notes-on-correlation">
+<h2>Notes on correlation<a class="headerlink" href="#notes-on-correlation" title="Link to this heading">#</a></h2>
+<p>Based on the results above BsmtHalfBath, MiscVal, BsmtFinSF2 will be removed from further modelling due to a low correlation.</p>
+</section>
+<section id="review-the-correlation-between-the-sales-price-and-all-other-continuous-variables-in-a-visual-format">
+<h2>Review the correlation between the sales price and all other continuous variables in a visual format<a class="headerlink" href="#review-the-correlation-between-the-sales-price-and-all-other-continuous-variables-in-a-visual-format" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Remnove the BsmtHalfBath, MiscVal, BsmtFinSF2 from the continuous data</span>
+<span class="n">continuous_data</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;BsmtHalfBath&#39;</span><span class="p">,</span> <span class="s1">&#39;MiscVal&#39;</span><span class="p">,</span> <span class="s1">&#39;BsmtFinSF2&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Create regression plots for all numeric columns except &#39;SalePrice&#39;</span>
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">continuous_data</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">col</span> <span class="o">!=</span> <span class="s1">&#39;SalePrice&#39;</span><span class="p">:</span>  <span class="c1"># Avoid plotting SalePrice against itself</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+        <span class="n">sns</span><span class="o">.</span><span class="n">regplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">continuous_data</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">continuous_data</span><span class="p">[</span><span class="s1">&#39;SalePrice&#39;</span><span class="p">])</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;SalePrice&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Regression Plot: </span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s1"> vs SalePrice&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/4c474d965b6d8ef5addef7a58bdf2366e85ff11a93d0cdbf5cbd5d577723d8c6.png" src="_images/4c474d965b6d8ef5addef7a58bdf2366e85ff11a93d0cdbf5cbd5d577723d8c6.png" />
+<img alt="_images/e07f426f8b2a255f131dbf417740a7de523c45cf5d3018c04b4cbb7cd59fe87e.png" src="_images/e07f426f8b2a255f131dbf417740a7de523c45cf5d3018c04b4cbb7cd59fe87e.png" />
+<img alt="_images/f820e66288083cd0ec85e011ea3e0845a6119a9f777215cf489b4ebaa9b3fcaa.png" src="_images/f820e66288083cd0ec85e011ea3e0845a6119a9f777215cf489b4ebaa9b3fcaa.png" />
+<img alt="_images/a0e389efda867ee23c5393fddc418c61a0c536c11510698b5a56285b604ba822.png" src="_images/a0e389efda867ee23c5393fddc418c61a0c536c11510698b5a56285b604ba822.png" />
+<img alt="_images/e8603733818e71ffb5682738e7b46e69c7c31326731f0c91f3e03a2dbb046487.png" src="_images/e8603733818e71ffb5682738e7b46e69c7c31326731f0c91f3e03a2dbb046487.png" />
+<img alt="_images/c35ad5b244952980f78e86f64c288e1e2459fba7069e831d9cc3cc2e8a484794.png" src="_images/c35ad5b244952980f78e86f64c288e1e2459fba7069e831d9cc3cc2e8a484794.png" />
+<img alt="_images/2144111a2b927ab2a45104f80fe1748b92a616214019c775310760cf3dc790e4.png" src="_images/2144111a2b927ab2a45104f80fe1748b92a616214019c775310760cf3dc790e4.png" />
+<img alt="_images/b282b4784d0790ca6d757d58bedf3240427c22ec652c66fdc0bb9cceabe78129.png" src="_images/b282b4784d0790ca6d757d58bedf3240427c22ec652c66fdc0bb9cceabe78129.png" />
+<img alt="_images/b9f4732148d6112fd95f36dd112ce2c0a77e94770f29975d7ad36cc8c87ef8a2.png" src="_images/b9f4732148d6112fd95f36dd112ce2c0a77e94770f29975d7ad36cc8c87ef8a2.png" />
+<img alt="_images/6b85090c4477e17180c9c59576a6b441349b5ca220c9f65f5613aeb767d2c6cc.png" src="_images/6b85090c4477e17180c9c59576a6b441349b5ca220c9f65f5613aeb767d2c6cc.png" />
+<img alt="_images/ed84e2b9735091353609f55844341dea9194adb42aa883d560e3644593f8459d.png" src="_images/ed84e2b9735091353609f55844341dea9194adb42aa883d560e3644593f8459d.png" />
+<img alt="_images/6fea0fcada521695275fdb1f0382bc6fa215bf6c061b04e7a2dfcd29c2b5199c.png" src="_images/6fea0fcada521695275fdb1f0382bc6fa215bf6c061b04e7a2dfcd29c2b5199c.png" />
+<img alt="_images/a61a7fcebb5071c1cf8446a88a4130ab7c864b2446c339f73ef17dcac590b366.png" src="_images/a61a7fcebb5071c1cf8446a88a4130ab7c864b2446c339f73ef17dcac590b366.png" />
+<img alt="_images/42c9c069f6a827708ebb9e3867979ac1787f146df27f6f0814606fc46c50140b.png" src="_images/42c9c069f6a827708ebb9e3867979ac1787f146df27f6f0814606fc46c50140b.png" />
+<img alt="_images/2a9cdc80cf8bccb1aa151bfff19b6679923f094c50f3d27fbf110d8800e0e34f.png" src="_images/2a9cdc80cf8bccb1aa151bfff19b6679923f094c50f3d27fbf110d8800e0e34f.png" />
+<img alt="_images/53b1605c7104fc1a6d17369e03d03136c970ff2a08cda3743c2c78c00b1515ae.png" src="_images/53b1605c7104fc1a6d17369e03d03136c970ff2a08cda3743c2c78c00b1515ae.png" />
+<img alt="_images/fcd3b7d056e2a2b45fc800dbe51c6f3aa43a1b5c8c525594459467ee7edf9587.png" src="_images/fcd3b7d056e2a2b45fc800dbe51c6f3aa43a1b5c8c525594459467ee7edf9587.png" />
+<img alt="_images/b32eec13742c2843e49dac6993f08292b42194c04cb3cf0689d11d718c23f449.png" src="_images/b32eec13742c2843e49dac6993f08292b42194c04cb3cf0689d11d718c23f449.png" />
+<img alt="_images/0d57393be624c1da211f1ff03fefa4c51f9537bc16a1487ad27e8d3aeaab714f.png" src="_images/0d57393be624c1da211f1ff03fefa4c51f9537bc16a1487ad27e8d3aeaab714f.png" />
+<img alt="_images/1a8bd95d1f8bce969ad32da89c081436d906718fb27e5dcc0d0d1e6362460d1a.png" src="_images/1a8bd95d1f8bce969ad32da89c081436d906718fb27e5dcc0d0d1e6362460d1a.png" />
+<img alt="_images/0c265c6523127d74d62caf16f67a2cad79d39ff67bfb4f9abaf1989e9dff8732.png" src="_images/0c265c6523127d74d62caf16f67a2cad79d39ff67bfb4f9abaf1989e9dff8732.png" />
+<img alt="_images/f94bd87ab72d9ab67b46bf52761e69c7547a9690d1ab265b34650ee47cf4a301.png" src="_images/f94bd87ab72d9ab67b46bf52761e69c7547a9690d1ab265b34650ee47cf4a301.png" />
+<img alt="_images/f43ea8f87f91d7166a12926b69585054ad6f9f26b920dd594ee739be3174f9e6.png" src="_images/f43ea8f87f91d7166a12926b69585054ad6f9f26b920dd594ee739be3174f9e6.png" />
+<img alt="_images/79f5a8639fccd4e990a4efcc1b23e6b91b3b67307bf8d7bd7b320ae74cb2802f.png" src="_images/79f5a8639fccd4e990a4efcc1b23e6b91b3b67307bf8d7bd7b320ae74cb2802f.png" />
+<img alt="_images/4a959992193eec2a6657a2755a156c0d56a309f246466c0991cdada466cf38cc.png" src="_images/4a959992193eec2a6657a2755a156c0d56a309f246466c0991cdada466cf38cc.png" />
+<img alt="_images/4bb2cdbb3fa3c8010cafbebe254c09582c66946adc090662fc41aea08a498c71.png" src="_images/4bb2cdbb3fa3c8010cafbebe254c09582c66946adc090662fc41aea08a498c71.png" />
+<img alt="_images/097e11980013bbfed596ab3f6b799eccecb24f678b5d1144b78e12edad6919be.png" src="_images/097e11980013bbfed596ab3f6b799eccecb24f678b5d1144b78e12edad6919be.png" />
+<img alt="_images/03939fee96e8fd8ae6c77bbcfc7c51ccff703d311311193706897b5e0325f033.png" src="_images/03939fee96e8fd8ae6c77bbcfc7c51ccff703d311311193706897b5e0325f033.png" />
+<img alt="_images/c8a662fade0673949986ae960896320c54e2c9c2b429914205393fa4ec57fdc5.png" src="_images/c8a662fade0673949986ae960896320c54e2c9c2b429914205393fa4ec57fdc5.png" />
+<img alt="_images/a830e0cbf64631f36d1af54934635ab2d4070929df750ecd5b4e5099b9f8fcd7.png" src="_images/a830e0cbf64631f36d1af54934635ab2d4070929df750ecd5b4e5099b9f8fcd7.png" />
+<img alt="_images/5fcc53fdfeb92d0a1d828e70ce041f28f7daa3e0023cb2db0703d4fbabad3709.png" src="_images/5fcc53fdfeb92d0a1d828e70ce041f28f7daa3e0023cb2db0703d4fbabad3709.png" />
+<img alt="_images/54bfc1e1ecdea7b0e170e84fcc7f11ba621ca1c2af10b2696c8350ea7cc044ff.png" src="_images/54bfc1e1ecdea7b0e170e84fcc7f11ba621ca1c2af10b2696c8350ea7cc044ff.png" />
+<img alt="_images/982a0170ab6d18723d9920e6c66ac35a94257a739b1f57fd247aed5aa3d58119.png" src="_images/982a0170ab6d18723d9920e6c66ac35a94257a739b1f57fd247aed5aa3d58119.png" />
+<img alt="_images/458c90f48cf872ee0f190cc67682bc0fceafa19607b180336a890d6ede2974a7.png" src="_images/458c90f48cf872ee0f190cc67682bc0fceafa19607b180336a890d6ede2974a7.png" />
+<img alt="_images/54a3c822df474ff7acb37b89fb27ec0081f6a26e4e667a3cc5946ae0c69f6e64.png" src="_images/54a3c822df474ff7acb37b89fb27ec0081f6a26e4e667a3cc5946ae0c69f6e64.png" />
+</div>
+</div>
+</section>
+<section id="categorical-data">
+<h2>Categorical data<a class="headerlink" href="#categorical-data" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select object (categorical) columns</span>
+<span class="n">categorical_columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+<span class="c1"># Add &#39;SalesPrice&#39; to the selected columns</span>
+<span class="n">categorical_columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;SalePrice&#39;</span><span class="p">)</span>
+
+<span class="c1"># Create categorical_data DataFrame</span>
+<span class="n">categorical_data</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">categorical_columns</span><span class="p">]</span>
+
+<span class="c1"># Display the first 5 rows of the categorical data</span>
+<span class="n">categorical_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>MSZoning</th>
+      <th>Street</th>
+      <th>Alley</th>
+      <th>LotShape</th>
+      <th>LandContour</th>
+      <th>Utilities</th>
+      <th>LotConfig</th>
+      <th>LandSlope</th>
+      <th>Neighborhood</th>
+      <th>Condition1</th>
+      <th>...</th>
+      <th>GarageQual</th>
+      <th>GarageCond</th>
+      <th>PavedDrive</th>
+      <th>PoolQC</th>
+      <th>Fence</th>
+      <th>MiscFeature</th>
+      <th>SaleType</th>
+      <th>SaleCondition</th>
+      <th>Neighborhood_Price_Bucket</th>
+      <th>SalePrice</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>RL</td>
+      <td>Pave</td>
+      <td>Not Applicable</td>
+      <td>Reg</td>
+      <td>Lvl</td>
+      <td>AllPub</td>
+      <td>Inside</td>
+      <td>Gtl</td>
+      <td>CollgCr</td>
+      <td>Norm</td>
+      <td>...</td>
+      <td>TA</td>
+      <td>TA</td>
+      <td>Y</td>
+      <td>Not Applicable</td>
+      <td>Not Applicable</td>
+      <td>Not Applicable</td>
+      <td>WD</td>
+      <td>Normal</td>
+      <td>Level_3</td>
+      <td>208500</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>RL</td>
+      <td>Pave</td>
+      <td>Not Applicable</td>
+      <td>Reg</td>
+      <td>Lvl</td>
+      <td>AllPub</td>
+      <td>FR2</td>
+      <td>Gtl</td>
+      <td>Veenker</td>
+      <td>Feedr</td>
+      <td>...</td>
+      <td>TA</td>
+      <td>TA</td>
+      <td>Y</td>
+      <td>Not Applicable</td>
+      <td>Not Applicable</td>
+      <td>Not Applicable</td>
+      <td>WD</td>
+      <td>Normal</td>
+      <td>Level_4</td>
+      <td>181500</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>RL</td>
+      <td>Pave</td>
+      <td>Not Applicable</td>
+      <td>IR1</td>
+      <td>Lvl</td>
+      <td>AllPub</td>
+      <td>Inside</td>
+      <td>Gtl</td>
+      <td>CollgCr</td>
+      <td>Norm</td>
+      <td>...</td>
+      <td>TA</td>
+      <td>TA</td>
+      <td>Y</td>
+      <td>Not Applicable</td>
+      <td>Not Applicable</td>
+      <td>Not Applicable</td>
+      <td>WD</td>
+      <td>Normal</td>
+      <td>Level_3</td>
+      <td>223500</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>RL</td>
+      <td>Pave</td>
+      <td>Not Applicable</td>
+      <td>IR1</td>
+      <td>Lvl</td>
+      <td>AllPub</td>
+      <td>Corner</td>
+      <td>Gtl</td>
+      <td>Crawfor</td>
+      <td>Norm</td>
+      <td>...</td>
+      <td>TA</td>
+      <td>TA</td>
+      <td>Y</td>
+      <td>Not Applicable</td>
+      <td>Not Applicable</td>
+      <td>Not Applicable</td>
+      <td>WD</td>
+      <td>Abnorml</td>
+      <td>Level_4</td>
+      <td>140000</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>RL</td>
+      <td>Pave</td>
+      <td>Not Applicable</td>
+      <td>IR1</td>
+      <td>Lvl</td>
+      <td>AllPub</td>
+      <td>FR2</td>
+      <td>Gtl</td>
+      <td>NoRidge</td>
+      <td>Norm</td>
+      <td>...</td>
+      <td>TA</td>
+      <td>TA</td>
+      <td>Y</td>
+      <td>Not Applicable</td>
+      <td>Not Applicable</td>
+      <td>Not Applicable</td>
+      <td>WD</td>
+      <td>Normal</td>
+      <td>Level_4</td>
+      <td>250000</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 45 columns</p>
+</div></div></div>
+</div>
+<section id="distribution">
+<h3>Distribution<a class="headerlink" href="#distribution" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Creating plots for each categorical variable</span>
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">categorical_data</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">col</span> <span class="o">!=</span> <span class="s1">&#39;SalePrice&#39;</span><span class="p">:</span>  <span class="c1"># Skip if the column is &#39;SalePrice&#39;</span>
+        <span class="n">category_counts</span> <span class="o">=</span> <span class="n">categorical_data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+
+        <span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+        <span class="c1"># Bar plot for category counts</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">category_counts</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">category_counts</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Count&#39;</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Count&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+
+        <span class="c1"># Rotate x-axis labels to 90 degrees</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Distribution Median SalesPrice by </span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/31aceb67ea1ecd1e3f1749e3040e51692f70661e869ebb7b24144dba592bbf0e.png" src="_images/31aceb67ea1ecd1e3f1749e3040e51692f70661e869ebb7b24144dba592bbf0e.png" />
+<img alt="_images/71b9449158eef2ad9dda73b029400520d4ff0d1cbfbe00c415d8c77704e5f77e.png" src="_images/71b9449158eef2ad9dda73b029400520d4ff0d1cbfbe00c415d8c77704e5f77e.png" />
+<img alt="_images/8e323eb953d171d981cbdcbcdb01274cb5a0cbbfeeb373585637f17ecafc9c11.png" src="_images/8e323eb953d171d981cbdcbcdb01274cb5a0cbbfeeb373585637f17ecafc9c11.png" />
+<img alt="_images/16d53a31144279f384a4b97176ca05d54412ac4fb82cf2181e1601c67f89be86.png" src="_images/16d53a31144279f384a4b97176ca05d54412ac4fb82cf2181e1601c67f89be86.png" />
+<img alt="_images/0f31f20066d33424b65188662e9611ae07d20aeafdaf7a7f896bb4c4688d9cc2.png" src="_images/0f31f20066d33424b65188662e9611ae07d20aeafdaf7a7f896bb4c4688d9cc2.png" />
+<img alt="_images/1e71249953626d059c6b0aca34df9fb2731e68112f6e06b064551760e1d39968.png" src="_images/1e71249953626d059c6b0aca34df9fb2731e68112f6e06b064551760e1d39968.png" />
+<img alt="_images/748c1db79d79f230bcecd9f07f8b5bced6b57b97f4e77292be877c74bfef6494.png" src="_images/748c1db79d79f230bcecd9f07f8b5bced6b57b97f4e77292be877c74bfef6494.png" />
+<img alt="_images/42c2201fc3cbd043e27d87a01fc2b988fa8cb83df47a13c13736809274254631.png" src="_images/42c2201fc3cbd043e27d87a01fc2b988fa8cb83df47a13c13736809274254631.png" />
+<img alt="_images/f37dadd8fa8e88ebe30d35a49a9d74e1bebe55cc1afc74952be1748eebb86dc1.png" src="_images/f37dadd8fa8e88ebe30d35a49a9d74e1bebe55cc1afc74952be1748eebb86dc1.png" />
+<img alt="_images/b9c4aed21af3ffa1b8d912c2dd3b415f3257910585395a3587a5f5e292747bf8.png" src="_images/b9c4aed21af3ffa1b8d912c2dd3b415f3257910585395a3587a5f5e292747bf8.png" />
+<img alt="_images/bb841092656002c8d5b020390984eee129e249f1784f64f00eaaf1c8a299e587.png" src="_images/bb841092656002c8d5b020390984eee129e249f1784f64f00eaaf1c8a299e587.png" />
+<img alt="_images/89d0a07154d6ab0fe592052b49a227fed99180559bbd2be8627345f753857691.png" src="_images/89d0a07154d6ab0fe592052b49a227fed99180559bbd2be8627345f753857691.png" />
+<img alt="_images/2e53ee58ab08e12a49c717ac301bf81f8ba4c2e96f18d66c80d2a57e956dc8e1.png" src="_images/2e53ee58ab08e12a49c717ac301bf81f8ba4c2e96f18d66c80d2a57e956dc8e1.png" />
+<img alt="_images/3a0348b7825eaff44c5ce0aae968e969ea2c7d394be1ebfd50b0d3ae99ca1f63.png" src="_images/3a0348b7825eaff44c5ce0aae968e969ea2c7d394be1ebfd50b0d3ae99ca1f63.png" />
+<img alt="_images/6ec69871dd2dc389e844c82b443b4fb0d5d4f0af73e060c30c9def99a0bd0c5a.png" src="_images/6ec69871dd2dc389e844c82b443b4fb0d5d4f0af73e060c30c9def99a0bd0c5a.png" />
+<img alt="_images/67baf8b3eaf4f6de03c5273f52c8f85289d903642306c28e254b2dd28aaa5657.png" src="_images/67baf8b3eaf4f6de03c5273f52c8f85289d903642306c28e254b2dd28aaa5657.png" />
+<img alt="_images/7f2b1a47ab5baa2eaea27b0ce5d2c87941e600f21bbee92f6a1b87642dc413ee.png" src="_images/7f2b1a47ab5baa2eaea27b0ce5d2c87941e600f21bbee92f6a1b87642dc413ee.png" />
+<img alt="_images/dc096f9e7223d8d418703c31815a24590298a5c16cd9ea7ad26fe4b5328bbc43.png" src="_images/dc096f9e7223d8d418703c31815a24590298a5c16cd9ea7ad26fe4b5328bbc43.png" />
+<img alt="_images/71211a102e2e011f9b27118ad23513b0086b96057c2ce78eb231fd647e83cbb2.png" src="_images/71211a102e2e011f9b27118ad23513b0086b96057c2ce78eb231fd647e83cbb2.png" />
+<img alt="_images/54fd9213fd9028bfedc37cbd11036d2798956584f4f6f704175c60b50a80ee36.png" src="_images/54fd9213fd9028bfedc37cbd11036d2798956584f4f6f704175c60b50a80ee36.png" />
+<img alt="_images/1421241363de915246f9dfbf481770a16e5e02889595c3511296125bde3fe5cb.png" src="_images/1421241363de915246f9dfbf481770a16e5e02889595c3511296125bde3fe5cb.png" />
+<img alt="_images/37187ba5d8a98c816622cd9e0aa914ddc0ff8e09884239d6b981751cc8207847.png" src="_images/37187ba5d8a98c816622cd9e0aa914ddc0ff8e09884239d6b981751cc8207847.png" />
+<img alt="_images/5471575e4bba22c59a3114677a2943ce26ad3a4c7c3cdd066939264b5e7b33c8.png" src="_images/5471575e4bba22c59a3114677a2943ce26ad3a4c7c3cdd066939264b5e7b33c8.png" />
+<img alt="_images/858736d8a26705e1e97af987536b6751510d93dcf5d030b9791b05f00e08c245.png" src="_images/858736d8a26705e1e97af987536b6751510d93dcf5d030b9791b05f00e08c245.png" />
+<img alt="_images/effade43f12cf78184acb17ccd001e045a3cbe3e82e07c04d6bca777696f1bc2.png" src="_images/effade43f12cf78184acb17ccd001e045a3cbe3e82e07c04d6bca777696f1bc2.png" />
+<img alt="_images/14ae45d3d3108fef239352834b57588de4253d0c4f93f8b9ec238b17795fa2ab.png" src="_images/14ae45d3d3108fef239352834b57588de4253d0c4f93f8b9ec238b17795fa2ab.png" />
+<img alt="_images/dcfef0e562555bd93d95a7469c427c815810d7d0143e7cd0f53601daec98de67.png" src="_images/dcfef0e562555bd93d95a7469c427c815810d7d0143e7cd0f53601daec98de67.png" />
+<img alt="_images/70e2f0a3e6eb8bc11d94041f50eabb11fa64da3eff95be993f293ff3b9562751.png" src="_images/70e2f0a3e6eb8bc11d94041f50eabb11fa64da3eff95be993f293ff3b9562751.png" />
+<img alt="_images/e10f7f9265f964f3e408d3fdb8c41a8b5a769099b7aa57bdf488a2fd36e94b34.png" src="_images/e10f7f9265f964f3e408d3fdb8c41a8b5a769099b7aa57bdf488a2fd36e94b34.png" />
+<img alt="_images/3737dffddce1db8efc4374056e0934e6527d27c03c8bfe3de7e51bdae1309774.png" src="_images/3737dffddce1db8efc4374056e0934e6527d27c03c8bfe3de7e51bdae1309774.png" />
+<img alt="_images/ef827e1d933a95d9e9711a67eb6e0231524610cf0dbefbec61f149b136a63008.png" src="_images/ef827e1d933a95d9e9711a67eb6e0231524610cf0dbefbec61f149b136a63008.png" />
+<img alt="_images/c73003da5f3375b6102d027107feac2e1aab3fcbea82c1ec24cd4fdca83591cb.png" src="_images/c73003da5f3375b6102d027107feac2e1aab3fcbea82c1ec24cd4fdca83591cb.png" />
+<img alt="_images/f9ab8aae3f22a9969d9b37a303b049d734323e5400284033ae5d8e02219b9196.png" src="_images/f9ab8aae3f22a9969d9b37a303b049d734323e5400284033ae5d8e02219b9196.png" />
+<img alt="_images/b5227d20b7d0397c2be9b93855f6545f8af2c40fb37325dc27cc07184d6ac208.png" src="_images/b5227d20b7d0397c2be9b93855f6545f8af2c40fb37325dc27cc07184d6ac208.png" />
+<img alt="_images/eb4d32762f6e273d7b5e213b6435b56445da214f3dd3c3ce5adc7fc2d46a9464.png" src="_images/eb4d32762f6e273d7b5e213b6435b56445da214f3dd3c3ce5adc7fc2d46a9464.png" />
+<img alt="_images/3daa5a7bd01b248cf3e24ea50e2ad901cc62ddd5a2af34df86e479c9fcc7b23a.png" src="_images/3daa5a7bd01b248cf3e24ea50e2ad901cc62ddd5a2af34df86e479c9fcc7b23a.png" />
+<img alt="_images/57f903a4d36526174039e0ffbee598ffaa83322f3eed954cebee684775ae9963.png" src="_images/57f903a4d36526174039e0ffbee598ffaa83322f3eed954cebee684775ae9963.png" />
+<img alt="_images/a6fdf0b093199d525e7ee5c24c71437cb1d131d02255da4893c261748a21dfd6.png" src="_images/a6fdf0b093199d525e7ee5c24c71437cb1d131d02255da4893c261748a21dfd6.png" />
+<img alt="_images/c344547f37f0a780f32fcd50d47e07bbb4df93df7d7c1a697d4b44f98e77d593.png" src="_images/c344547f37f0a780f32fcd50d47e07bbb4df93df7d7c1a697d4b44f98e77d593.png" />
+<img alt="_images/e7d2b3068d5f183e13a760b7182c3b10fe71fcdb3897a6a6909662bae26bce8a.png" src="_images/e7d2b3068d5f183e13a760b7182c3b10fe71fcdb3897a6a6909662bae26bce8a.png" />
+<img alt="_images/1ece72bf4a4c474077c376e9352470d9b9844dd8c0121b7c0df56dab4c275a18.png" src="_images/1ece72bf4a4c474077c376e9352470d9b9844dd8c0121b7c0df56dab4c275a18.png" />
+<img alt="_images/960ec240a23b5bf2602d418f9056ff5091b861bebc641ca38e44c718c0314fea.png" src="_images/960ec240a23b5bf2602d418f9056ff5091b861bebc641ca38e44c718c0314fea.png" />
+<img alt="_images/ad6a1546be1bb9a7386b118c57cda4d7323645846844a2fb77e3eca67d30f976.png" src="_images/ad6a1546be1bb9a7386b118c57cda4d7323645846844a2fb77e3eca67d30f976.png" />
+<img alt="_images/4daf6e95aaf185a1ff7755b93b14b56666b5cc974a1f78cc378e46f092c47a7b.png" src="_images/4daf6e95aaf185a1ff7755b93b14b56666b5cc974a1f78cc378e46f092c47a7b.png" />
+</div>
+</div>
+<section id="notes-on-the-distribution">
+<h4>Notes on the distribution<a class="headerlink" href="#notes-on-the-distribution" title="Link to this heading">#</a></h4>
+<p>Based on a prelimanary view the following variable should not be included in additional analysis due to the distribution as a result of a lack of variability:
+Street, Alley, Utilities, Condition2, RoofMatl, Heating, Functional, PoolQC</p>
+</section>
+</section>
+<section id="median-value-per-category">
+<h3>Median Value per category<a class="headerlink" href="#median-value-per-category" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select categorical columns (excluding SalePrice)</span>
+<span class="n">categorical_data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;object&#39;</span><span class="p">])</span>
+
+<span class="c1"># Compute overall median of SalePrice</span>
+<span class="n">overall_median</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;SalePrice&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
+
+<span class="c1"># Creating plots for each categorical variable (EXCLUDING SalePrice)</span>
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">categorical_data</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="c1"># Calculate median SalePrice for each category</span>
+    <span class="n">category_medians</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">col</span><span class="p">)[</span><span class="s1">&#39;SalePrice&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span>
+
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+    <span class="c1"># Bar plot for median SalePrice per category (EXCLUDE from legend)</span>
+    <span class="n">bars</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">category_medians</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">category_medians</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Median SalePrice&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+    
+    <span class="c1"># Rotate x-axis labels to 90 degrees for readability</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+
+    <span class="c1"># Add an overall median line (WITH legend)</span>
+    <span class="n">median_line</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">overall_median</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Overall Median SalesPrice (</span><span class="si">{</span><span class="n">overall_median</span><span class="si">:</span><span class="s1">,.0f</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Manually set legend, excluding bar plot</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="p">[</span><span class="n">median_line</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Add title</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Median SalePrice by </span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/a1e6581540237b343d80ce502ee1812b4528f8b43166a864dc5059a731ed9751.png" src="_images/a1e6581540237b343d80ce502ee1812b4528f8b43166a864dc5059a731ed9751.png" />
+<img alt="_images/4b4b99649f3d31d23b11dff9c26c67b15cf5c6fc239445d738fbaa38abacde03.png" src="_images/4b4b99649f3d31d23b11dff9c26c67b15cf5c6fc239445d738fbaa38abacde03.png" />
+<img alt="_images/baa5e5ba1146a5ddd2dff2092302c97d6dc33d339555473bd498bd66caa03106.png" src="_images/baa5e5ba1146a5ddd2dff2092302c97d6dc33d339555473bd498bd66caa03106.png" />
+<img alt="_images/0d8e8375a970affd9c3bfbc47368dfba131a60560208910af65d7e3209f725de.png" src="_images/0d8e8375a970affd9c3bfbc47368dfba131a60560208910af65d7e3209f725de.png" />
+<img alt="_images/ab71460825dd68f0334a1a8b33f1a8d5fe688151a75d93291c814969e231ad71.png" src="_images/ab71460825dd68f0334a1a8b33f1a8d5fe688151a75d93291c814969e231ad71.png" />
+<img alt="_images/30f0658d19aa4aa5809ff641c3ccf9d087b38ec415d49dcfe85d6ad2504ad938.png" src="_images/30f0658d19aa4aa5809ff641c3ccf9d087b38ec415d49dcfe85d6ad2504ad938.png" />
+<img alt="_images/0f8868221533df9e09581ee9ca0b0054753d9b66520da207380bb9c129bb8400.png" src="_images/0f8868221533df9e09581ee9ca0b0054753d9b66520da207380bb9c129bb8400.png" />
+<img alt="_images/9d2193546bb124f25f7408625e6c88ff80f892a433624f1b847ed6c2c0c34540.png" src="_images/9d2193546bb124f25f7408625e6c88ff80f892a433624f1b847ed6c2c0c34540.png" />
+<img alt="_images/8e4ff8254b661d674659dfa17c0d5632d88795210767264dc50ffb1f28576051.png" src="_images/8e4ff8254b661d674659dfa17c0d5632d88795210767264dc50ffb1f28576051.png" />
+<img alt="_images/81a64880d5b6a153e0c8793b0785ce67f1a1ed48bd236bd679776616f2bcbd68.png" src="_images/81a64880d5b6a153e0c8793b0785ce67f1a1ed48bd236bd679776616f2bcbd68.png" />
+<img alt="_images/20cdd44c1934de467e755b177aa23c4366b301f783fa01a161d19217540e69e6.png" src="_images/20cdd44c1934de467e755b177aa23c4366b301f783fa01a161d19217540e69e6.png" />
+<img alt="_images/75b65cc112a9141bff35c91b70f7803ba99e12b8dc5b1136c4989477fc96a62c.png" src="_images/75b65cc112a9141bff35c91b70f7803ba99e12b8dc5b1136c4989477fc96a62c.png" />
+<img alt="_images/9fcfa9aaaf6d9729d12521287dfc01531eb122647e0b3d1fabb8b691d2b9fcd2.png" src="_images/9fcfa9aaaf6d9729d12521287dfc01531eb122647e0b3d1fabb8b691d2b9fcd2.png" />
+<img alt="_images/9fb78418befcd39a3495f4cef7a04d5a42a1d80462fb6201aec22b41c8d9dba2.png" src="_images/9fb78418befcd39a3495f4cef7a04d5a42a1d80462fb6201aec22b41c8d9dba2.png" />
+<img alt="_images/c30e40b0f254add805331acf7324cc3d111c5719bd5205a3d2e275551f48b38f.png" src="_images/c30e40b0f254add805331acf7324cc3d111c5719bd5205a3d2e275551f48b38f.png" />
+<img alt="_images/27dbb75e9cded67386066ce9e5594b2e8b53feb9b1902dbc360f136cfbb3b08e.png" src="_images/27dbb75e9cded67386066ce9e5594b2e8b53feb9b1902dbc360f136cfbb3b08e.png" />
+<img alt="_images/02d396e3113903ac0f39a980810a98c607c3543a7501ecf1ce7eda469cc0ef25.png" src="_images/02d396e3113903ac0f39a980810a98c607c3543a7501ecf1ce7eda469cc0ef25.png" />
+<img alt="_images/346576a8334d12a222f802a5e9ae2f97e16729069c4db9cf741d74376dacee14.png" src="_images/346576a8334d12a222f802a5e9ae2f97e16729069c4db9cf741d74376dacee14.png" />
+<img alt="_images/52da01d1f86d5a17fbcdde3bf40e3ece1fb0548abaf8b339eb9cb8b4e6762ce3.png" src="_images/52da01d1f86d5a17fbcdde3bf40e3ece1fb0548abaf8b339eb9cb8b4e6762ce3.png" />
+<img alt="_images/5281d8415750957962a0f6e1d3d393070fa4fb253e9b8ed0f4b9d54512b739bc.png" src="_images/5281d8415750957962a0f6e1d3d393070fa4fb253e9b8ed0f4b9d54512b739bc.png" />
+<img alt="_images/57fbc59d47a51ecc1eed6f2e34245e37db757b4637c72b7d23a64fdac5a17c9e.png" src="_images/57fbc59d47a51ecc1eed6f2e34245e37db757b4637c72b7d23a64fdac5a17c9e.png" />
+<img alt="_images/2fab32a9dd555ad012a420f8af372e2d684951c1aeac138f54b272ee90137e4d.png" src="_images/2fab32a9dd555ad012a420f8af372e2d684951c1aeac138f54b272ee90137e4d.png" />
+<img alt="_images/274d44075c4190eff4ef34c78c6ed157749e004fbfc5606ad7564edf5c28ec0b.png" src="_images/274d44075c4190eff4ef34c78c6ed157749e004fbfc5606ad7564edf5c28ec0b.png" />
+<img alt="_images/7bd1b13e00f18a9296d8f5bbfe771a95ce85f7b4c055d0ee3e8d7a8a68cc3c83.png" src="_images/7bd1b13e00f18a9296d8f5bbfe771a95ce85f7b4c055d0ee3e8d7a8a68cc3c83.png" />
+<img alt="_images/69781494c34bbe2cd970463310d807099c72b4f0dde86fcd8a1c5c6930879b28.png" src="_images/69781494c34bbe2cd970463310d807099c72b4f0dde86fcd8a1c5c6930879b28.png" />
+<img alt="_images/af3611e403f2a1c85fdd60428d9dbaee90bb77c40672fe44e31431a4688ec957.png" src="_images/af3611e403f2a1c85fdd60428d9dbaee90bb77c40672fe44e31431a4688ec957.png" />
+<img alt="_images/1ca74c68695978deda70d93cd9f7f03ca89c4b32f680b5ca566a857acc7a1109.png" src="_images/1ca74c68695978deda70d93cd9f7f03ca89c4b32f680b5ca566a857acc7a1109.png" />
+<img alt="_images/db392ad0832aea42dfee5aac0f1b2064592e15cad67dbb3e0a76aed4f4185609.png" src="_images/db392ad0832aea42dfee5aac0f1b2064592e15cad67dbb3e0a76aed4f4185609.png" />
+<img alt="_images/441d8e6a11f944448d8e7e69ae003c25dde77f9117627f185487a61d90cfaa8a.png" src="_images/441d8e6a11f944448d8e7e69ae003c25dde77f9117627f185487a61d90cfaa8a.png" />
+<img alt="_images/b789dbd4636aaf60667796b5f0c7bea600c64a4594992141df8df8c29792bd9e.png" src="_images/b789dbd4636aaf60667796b5f0c7bea600c64a4594992141df8df8c29792bd9e.png" />
+<img alt="_images/1fc7f58a29a686b580089ee1c868f0e26eac08e08b1189f7a6fa003a7ea13209.png" src="_images/1fc7f58a29a686b580089ee1c868f0e26eac08e08b1189f7a6fa003a7ea13209.png" />
+<img alt="_images/5bb7287e51e20c8a873d18badfe386142f21b19c700dca4e1890abf02fca42bd.png" src="_images/5bb7287e51e20c8a873d18badfe386142f21b19c700dca4e1890abf02fca42bd.png" />
+<img alt="_images/b0f29972c7069d1ca7129c5f53bbaa02e53fcfa6b8cdcac970586af95eeb50a3.png" src="_images/b0f29972c7069d1ca7129c5f53bbaa02e53fcfa6b8cdcac970586af95eeb50a3.png" />
+<img alt="_images/6e56534a2df4ebe97361f1d66ee28cc21175def00441f33c49bab10aa2b51503.png" src="_images/6e56534a2df4ebe97361f1d66ee28cc21175def00441f33c49bab10aa2b51503.png" />
+<img alt="_images/8e87cdfac725fde389f6b910f538ac4150369d9b506fdafa86f594a9b44e04f9.png" src="_images/8e87cdfac725fde389f6b910f538ac4150369d9b506fdafa86f594a9b44e04f9.png" />
+<img alt="_images/50821522ab4d537d79ce71b71641012ba956c3241c40c6a5574de99f8e2ef1ca.png" src="_images/50821522ab4d537d79ce71b71641012ba956c3241c40c6a5574de99f8e2ef1ca.png" />
+<img alt="_images/1148f3a984ff73c68308625cfd83a38e4e54beef627642bd8e18794dd49451e0.png" src="_images/1148f3a984ff73c68308625cfd83a38e4e54beef627642bd8e18794dd49451e0.png" />
+<img alt="_images/fadad47c9e6e7362f109889fe360e551a9843c44f614227b70c5644b03f6b1f9.png" src="_images/fadad47c9e6e7362f109889fe360e551a9843c44f614227b70c5644b03f6b1f9.png" />
+<img alt="_images/b5c5dc79f8418333b73355f1749ea375cdd5037886a14de6b2cf937e03ac16d7.png" src="_images/b5c5dc79f8418333b73355f1749ea375cdd5037886a14de6b2cf937e03ac16d7.png" />
+<img alt="_images/89b11a8ab1284150ebca2d69da2a7b9ff760956d2ea4f93c5713adb21086b119.png" src="_images/89b11a8ab1284150ebca2d69da2a7b9ff760956d2ea4f93c5713adb21086b119.png" />
+<img alt="_images/56d757cf646d856f0c350613075f66aebfd829789fbfdbd1d3e1487647d315e3.png" src="_images/56d757cf646d856f0c350613075f66aebfd829789fbfdbd1d3e1487647d315e3.png" />
+<img alt="_images/0823dbfb45dec31c774da15785972553e5c1eaf26344d664167881b5d9bf4f1b.png" src="_images/0823dbfb45dec31c774da15785972553e5c1eaf26344d664167881b5d9bf4f1b.png" />
+<img alt="_images/29acd4b57388a12976f1c400620f72da1c8451f43c822791d3ca230f034e43c0.png" src="_images/29acd4b57388a12976f1c400620f72da1c8451f43c822791d3ca230f034e43c0.png" />
+<img alt="_images/ab43613ecd688c1a2a947069c16db970701c694831977c61df171d2acd7e2c7b.png" src="_images/ab43613ecd688c1a2a947069c16db970701c694831977c61df171d2acd7e2c7b.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Export the reviewed data with the excluded columns to create a new csv</span>
+<span class="c1"># Create a list of columns to exclude</span>
+<span class="n">columns_to_exclude</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;BsmtHalfBath&#39;</span><span class="p">,</span> <span class="s1">&#39;MiscVal&#39;</span><span class="p">,</span> <span class="s1">&#39;BsmtFinSF2&#39;</span><span class="p">,</span> <span class="s1">&#39;Street&#39;</span><span class="p">,</span> <span class="s1">&#39;Alley&#39;</span><span class="p">,</span> <span class="s1">&#39;Utilities&#39;</span><span class="p">,</span> <span class="s1">&#39;Condition2&#39;</span><span class="p">,</span> <span class="s1">&#39;RoofMatl&#39;</span><span class="p">,</span> <span class="s1">&#39;Heating&#39;</span><span class="p">,</span> <span class="s1">&#39;Functional&#39;</span><span class="p">,</span> <span class="s1">&#39;PoolQC&#39;</span><span class="p">]</span>
+
+<span class="c1"># Drop the columns from the data</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns_to_exclude</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Export the data to a new csv file</span>
+<span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;outputs/train_cleaned_trimmed.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Data%20Ingestion%2C%20Cleaning%20%26%20Transformation.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Data Ingestion, Cleaning &amp; Transformation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Feature%20Engineering.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Feature Importance</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#review-the-salesprice-label">Review the SalesPrice Label</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#view-the-statistical-data-of-the-continuous-data">View the statistical data of the continuous data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notes-on-correlation">Notes on correlation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#review-the-correlation-between-the-sales-price-and-all-other-continuous-variables-in-a-visual-format">Review the correlation between the sales price and all other continuous variables in a visual format</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#categorical-data">Categorical data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#distribution">Distribution</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#notes-on-the-distribution">Notes on the distribution</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#median-value-per-category">Median Value per category</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Carl Carey
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
